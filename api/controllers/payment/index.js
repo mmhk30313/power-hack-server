@@ -5,7 +5,8 @@ const { authenticateJWT } = require("../auth");
 exports.get_billing_list = async(req, res) => {
     await authenticateJWT(req, res);
     if(req?.auth){
-        const {page, limit, email, phone, full_name} = req.body;
+        const {page, limit, email, phone, full_name} = req?.body;
+        // console.log({page, limit});
         const pageNumber = Number(page) || 1;
         const nPerPage = Number(limit) || 10;
         const filter_obj = {};
@@ -17,11 +18,17 @@ exports.get_billing_list = async(req, res) => {
                         .sort( { createdAt: -1 } )
                         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
                         .limit( nPerPage );
+        
+        console.log({billing_list: billing_list.length});
+        const total_paid_amount = billing_list.reduce((acc, curr) => {
+            return acc + curr.paid_amount;
+        }, 0);
         const billing_list_count = await Payment.find(filter_obj).count();
+        console.log({billing_list_count});
         return res.status(200).json({
             status: true,
             message: `The number billing list is ${billing_list?.length}!!!`,
-            data: {billing_list, billing_data_length: billing_list_count},
+            data: {billing_list, billing_data_length: billing_list_count, total_paid_amount: total_paid_amount},
         });
 
     }else{
@@ -98,7 +105,7 @@ exports.delete_billing_method = async(req, res) => {
         const {id: bill_id} = req.params;
         try {
             const payment_details_res = await Payment.findOneAndRemove({bill_id});
-            console.log({payment_details_res});
+            // console.log({payment_details_res});
             if(!payment_details_res){
                 return res.status(404).json({
                     status: false,
