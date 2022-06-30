@@ -138,7 +138,6 @@ exports.find_user_by_email = async (req, res) => {
         return res.status(401).json({
             status: false,
             message: "User is unauthorized to find user!!!",
-            data: []
         });
     }
 }
