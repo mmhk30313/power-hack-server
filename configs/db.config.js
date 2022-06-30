@@ -29,13 +29,13 @@
     console.log("\n ########### \n");
   
     // Local Config
-    dbURI = `mongodb://localhost:27017/${dbNameLive}`;
+    dbURI = `mongodb://localhost:27017/${dbNameLocal}`;
     uri = "localhost://27017";
    
   } else {
     
     isLive = true;
-    dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.lurqj5i.mongodb.net/?retryWrites=true&w=majority`;
+    dbURI = `mongodb+srv://power_hack:power_hack@cluster0.lurqj5i.mongodb.net/?retryWrites=true&w=majority`;
     uri = "Prod-Connection              ---- > Live";
  
  }
