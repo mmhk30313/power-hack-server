@@ -151,7 +151,7 @@ exports.delete_user = async (req, res) => {
             let {email} = req?.query;
             console.log(email);
             const exits_user_res = await User.findOne({ email });
-            console.log(exits_user_res);
+            console.log({exits_user_res});
             if (exits_user_res) {
                 const user_delete_res = await User.deleteOne({ email });
                 if (user_delete_res) {
