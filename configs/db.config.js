@@ -19,8 +19,7 @@
  if (process.env.NODE_ENV === "development") {
    
     console.log("Running at Development State");
-  
-    //  console.log("\n ########### \n");
+
     console.log(
           "\x1b[42m%s\x1b[0m",
           "Application was Running at localDB. Any Change Can Be Done"
@@ -34,6 +33,7 @@
    
   } else {
     
+    // Live Config
     isLive = true;
     dbURI = `mongodb+srv://power_hack:power_hack@cluster0.lurqj5i.mongodb.net/?retryWrites=true&w=majority`;
     uri = "Prod-Connection              ---- > Live";
