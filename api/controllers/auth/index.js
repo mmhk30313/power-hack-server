@@ -11,7 +11,7 @@ const authenticateJWT = async(req, res, next) => {
         const user_res = await User.findOne({remember_token: token}).select('-password');
         // console.log("====",{user_res});
         if(!user_res){
-            res.status(401).json({
+            res.json({
                 status: false,
                 message: "User is unauthorized!!!"
             });
@@ -20,7 +20,7 @@ const authenticateJWT = async(req, res, next) => {
             
             jwt.verify(token, accessTokenSecret, (err, user) => {
                 if (err) {
-                    return res.status(401).json({
+                    return res.json({
                         status: false,
                         message: "User is unauthorized!!!"
                     });

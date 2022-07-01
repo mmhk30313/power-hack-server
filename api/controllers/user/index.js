@@ -12,7 +12,7 @@ exports.find_user_details = async(req, res) => {
             data: user_details,
         });
     }else{
-        return res.status(404).json({
+        return res.json({
             status: false,
             message: "User is unauthorized to find user details!!!",
         });
@@ -29,7 +29,7 @@ exports.user_update_by_user = async (req, res) => {
         const email = user_email || param_email;
         const existing_user = await User.findOne({ email }).select("-remember_token -password");
         if (!existing_user) {
-            return res.status(404).json({
+            return res.json({
                 status: false,
                 message: "User is not found to update!!!",
             })
@@ -47,19 +47,19 @@ exports.user_update_by_user = async (req, res) => {
                 });
 
             }
-            return res.status(404).json({
+            return res.json({
                 status: false,
                 message: "User isn't found to update!!!"
             });
         } catch (error) {
-            return res.status(500).json({
+            return res.json({
                 success: false,
                 message: error?.message || "Something wrong to update this user"
             })
 
         }
     }else{
-        return res.status(401).json({
+        return res.json({
             status: false,
             message: "User is unauthorized to update user!!!",
         });
@@ -88,13 +88,13 @@ exports.find_all_users = async (req, res) => {
             })
 
         } catch (error) {
-            return res.status(500).json({
+            return res.json({
                 status: false,
                 message: error?.message || "Server error!!!"
             })
         }
     }else{
-        return res.status(401).json({
+        return res.json({
             status: false,
             message: "User is unauthorized to find users!!!",
         });
@@ -123,19 +123,19 @@ exports.find_user_by_email = async (req, res) => {
                     data: user,
                 })
             }
-            return res.status(404).json({
+            return res.json({
                 status: false,
                 message: "There is no user by this email!!!"
             })
 
         } catch (error) {
-            return res.status(500).json({
+            return res.json({
                 status: false,
                 message: error?.message || "Server error!!!"
             })
         }
     }else{
-        return res.status(401).json({
+        return res.json({
             status: false,
             message: "User is unauthorized to find user!!!",
         });
@@ -159,24 +159,24 @@ exports.delete_user = async (req, res) => {
                         message: "The user is successfully deleted!!!",
                     });
                 }
-                return res.status(404).json({
+                return res.json({
                     status: false,
                     message: "The user isn't deleted!!!"
                 })
             }
-            return res.status(404).json({
+            return res.json({
                 status: false,
                 message: "The user isn't exists to delete by this email"
             })
 
         } catch (error) {
-            return res.status(500).json({
+            return res.json({
                 status: false,
                 message: error?.message || "Server error!!!"
             })
         }
     }else{
-        return res.status(401).json({
+        return res.json({
             status: false,
             message: "User isn't authorized to delete user!!!"
         })

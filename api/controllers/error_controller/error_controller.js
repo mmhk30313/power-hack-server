@@ -6,12 +6,12 @@ exports.error4o4Controller = (req, res, next) => {
 
 exports.error401Controller = (error, req, res, next) => {
     if(error.status) {
-        res.status(401).json({
+        res.json({
             status: false,
             message: error?.message || "User is unauthorized!!!"
         });
     }
-    return res.status(401).json({
+    return res.json({
         status: false,
         message: "User is unauthorized!!!"
     });
@@ -29,5 +29,5 @@ exports.error500Controller = (error, req, res, next) => {
     }
 
     // console.log(error?.message);
-    return res.status(500).json({message: "server error"})
+    return res.json({message: "server error"})
 }

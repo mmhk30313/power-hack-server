@@ -13,7 +13,7 @@ exports.login_user = async (req, res) => {
     const {email, password} = req?.body;
     console.log({email, password});
     if(!email || !password) {
-        return res.status(406).json({
+        return res.json({
             status: false,
             message: "Email or password are missing",
         })
@@ -21,13 +21,13 @@ exports.login_user = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if(!user) {
-            return res.status(404).json({status: false, message: "User not found"});
+            return res.json({status: false, message: "User not found"});
         }
         const validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword) {
-            return res.status(400).json({status: false, message: "Incorrect password"});
+            return res.json({status: false, message: "Incorrect password"});
         }
-        // console.log({user});
+        console.log({user});
 
         
         const tokenObject = {email: user?.email, full_name: user?.full_name, phone: user?.phone};
@@ -41,10 +41,15 @@ exports.login_user = async (req, res) => {
         delete result.password;
         // delete result.role_id;
         delete result.remember_token;
-        return res.status(200).json({status: true, data: result, accessToken})
+        return res.status(200).json({
+            status: true, 
+            data: result, 
+            accessToken,
+            message: "User is logged in successfully!!!",
+        })
         
     } catch (error) {
-        res.status(500).json({
+        res.json({
             status: false,
             message: error?.message || "Server error"
         })
@@ -56,11 +61,11 @@ exports.login_user = async (req, res) => {
 exports.sign_up_user = async (req, res) => {
     const {body, files} = req;
     // console.log("====Body====", {body});
-    const {password, confirm_password, email} = body;
+    const {password, confirm_password, email, full_name, phone} = body;
     delete body.remember_token;
     
     if( password !== confirm_password ){
-        return res.status(406).json({
+        return res.json({
             status: false,
             message: password.length < 5 ? "Password length should be greater than 4 !!!" : "Your password and confirm password are matched",
         })
@@ -69,7 +74,7 @@ exports.sign_up_user = async (req, res) => {
         try {
             const already_exist_user = await User.findOne({email});
             if(already_exist_user){
-                return res.status(409).json({
+                return res.json({
                     status: false,
                     message: "Email already exists",
                 });
@@ -84,20 +89,28 @@ exports.sign_up_user = async (req, res) => {
                 const result = res_signup?._doc;
                 console.log({result});
                 if(result){
+                    const tokenObject = {email: email, full_name: full_name, phone: phone};
+                    const accessToken = jwt.sign(tokenObject, accessTokenSecret);
+
+                    const dataObj = {
+                        remember_token: accessToken,
+                    };
+                    await User.updateOne({email}, dataObj);
                     return res.status(200).json({
                         status: true,
                         message: "The user is successfully signed up",
-                        // data: result,
+                        data: result, 
+                        accessToken: accessToken,
                     });
                 }
-                return res.status(403).json({
+                return res.json({
                     status: false,
                     message: "Server error",
                 })
             }
 
         } catch (error) {
-            res.status(500).json({
+            res.json({
                 status: false,
                 message: error?.message || "Something wrong",
             })
@@ -119,7 +132,7 @@ exports.logout_user = async(req, res, next) => {
             })
             
         } catch (error) {
-            return res.status(500).json({
+            return res.json({
                 status: false,
                 message: error?.message || "Server error",
             })
