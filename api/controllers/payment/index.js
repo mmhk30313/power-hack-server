@@ -6,7 +6,6 @@ exports.get_billing_list = async(req, res) => {
     await authenticateJWT(req, res);
     if(req?.auth){
         const {page, limit, email, phone, full_name} = req?.body;
-        // console.log({page, limit});
         const pageNumber = Number(page) || 1;
         const nPerPage = Number(limit) || 10;
         const filter_obj = {};
