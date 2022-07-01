@@ -14,8 +14,7 @@
  let isLive = false;
  let dbNameLocal = 'PowerHack';
  let dbNameLive = 'PowerHack';
-//  let dbUserNameLive = 'RoadSideAssistanceUser';
- 
+
  if (process.env.NODE_ENV === "development") {
    
     console.log("Running at Development State");
