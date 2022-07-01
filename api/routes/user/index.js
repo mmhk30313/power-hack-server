@@ -17,7 +17,7 @@ router.get('/user/all', find_all_users);
 // Find a user by the user email
 router.get('/user/find-one/:email', find_user_by_email);
 
-// User delete only for admin
+// User delete
 router.delete('/user/delete', delete_user);
 
 // Find user details by token

@@ -2,7 +2,7 @@ const express = require("express");
 const { get_billing_list, create_billing_method, update_billing_method, delete_billing_method } = require("../../controllers/payment");
 const router = express.Router();
 
-// Get all billing methods
+// Get all billing methods for filtering & getting all billing methods
 router.post("/billing-list", get_billing_list);
 
 // Create a new billing method
