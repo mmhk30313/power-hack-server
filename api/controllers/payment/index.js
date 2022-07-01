@@ -13,7 +13,6 @@ exports.get_billing_list = async(req, res) => {
         email && (filter_obj.email = email);
         phone && (filter_obj.phone = phone);
         full_name && (filter_obj.full_name = full_name);
-        // console.log({filter_obj});
         const billing_list = await Payment.find(filter_obj)
                         .sort( { createdAt: -1 } )
                         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
