@@ -20,12 +20,10 @@ app.use(cors({ origin: true }));
 app.use(rootPath);
 route_paths?.map(route_path => app.use('/api', route_path));
 
-
 // MongoDB Connection With Mongoose
 require("./configs/db.config");
 global.appRoot = path.resolve(__dirname);
 app.use('/api/static', express.static('uploads'));
-
 
 app.use(error4o4Controller);
 
