@@ -1,9 +1,6 @@
 const express = require("express");
 const path = require("path");
 const fileUpload = require("express-fileupload");
-// const axios = require("axios");
-
-// const redis = require("redis");
 const app = express();
 require("./configs/env.config");
 const cors = require('cors');
