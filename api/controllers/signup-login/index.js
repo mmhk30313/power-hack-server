@@ -13,7 +13,7 @@ exports.login_user = async (req, res) => {
     const {email, password} = req?.body;
     console.log({email, password});
     if(!email || !password) {
-        return res.json({
+        return res.status(403).json({
             status: false,
             message: "Email or password are missing",
         })
@@ -21,11 +21,11 @@ exports.login_user = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if(!user) {
-            return res.json({status: false, message: "User not found"});
+            return res.status(404).json({status: false, message: "User not found"});
         }
         const validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword) {
-            return res.json({status: false, message: "Incorrect password"});
+            return res.status(403).json({status: false, message: "Incorrect password"});
         }
         console.log({user});
 
@@ -49,7 +49,7 @@ exports.login_user = async (req, res) => {
         })
         
     } catch (error) {
-        res.json({
+        return res.status(500).json({
             status: false,
             message: error?.message || "Server error"
         })
@@ -65,7 +65,7 @@ exports.sign_up_user = async (req, res) => {
     delete body.remember_token;
     
     if( password !== confirm_password ){
-        return res.json({
+        return res.status(403).json({
             status: false,
             message: password.length < 5 ? "Password length should be greater than 4 !!!" : "Your password and confirm password are matched",
         })
@@ -74,9 +74,9 @@ exports.sign_up_user = async (req, res) => {
         try {
             const already_exist_user = await User.findOne({email});
             if(already_exist_user){
-                return res.json({
+                return res.status(403).json({
                     status: false,
-                    message: "Email already exists",
+                    message: "Email already exists, please try with another email!!!",
                 });
             } else{
                 // console.log({files});
@@ -103,14 +103,14 @@ exports.sign_up_user = async (req, res) => {
                         accessToken: accessToken,
                     });
                 }
-                return res.json({
+                return res.status(503).json({
                     status: false,
-                    message: "Server error",
+                    message: "Something went wrong, please try again!!!",
                 })
             }
 
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 status: false,
                 message: error?.message || "Something wrong",
             })

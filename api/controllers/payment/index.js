@@ -30,7 +30,7 @@ exports.get_billing_list = async(req, res) => {
         });
 
     }else{
-        res.json({
+        res.status(401).json({
             status: false,
             message: "User is unauthorized to filter billing list!!!",
         });
@@ -54,7 +54,7 @@ exports.create_billing_method = async(req, res) => {
             data: payment_details,
         });
     }else{
-        res.json({
+        res.status(401).json({
             status: false,
             message: "User is unauthorized to create billing method!!!",
         });
@@ -71,7 +71,7 @@ exports.update_billing_method = async(req, res) => {
         try {
             const payment_details = await Payment.findOneAndUpdate({bill_id}, body, {new: true});
             if(!payment_details){
-                return res.json({
+                return res.status(404).json({
                     status: false,
                     message: "The billing method isn't exists to update!!!",
                 });
@@ -83,13 +83,13 @@ exports.update_billing_method = async(req, res) => {
             });
             
         } catch (error) {
-            return res.json({
+            return res.status(500).json({
                 status: false,
                 message: error?.message || "Server error!!!"
             })
         }
     }else{
-        res.json({
+        res.status(401).json({
             status: false,
             message: "User is unauthorized to update billing method!!!",
         });
@@ -105,7 +105,7 @@ exports.delete_billing_method = async(req, res) => {
             const payment_details_res = await Payment.findOneAndRemove({bill_id});
             // console.log({payment_details_res});
             if(!payment_details_res){
-                return res.json({
+                return res.status(404).json({
                     status: false,
                     message: "The billing method isn't exists to delete!!!",
                 });
@@ -116,13 +116,13 @@ exports.delete_billing_method = async(req, res) => {
             });
             
         } catch (error) {
-            return res.json({
+            return res.status(500).json({
                 status: false,
                 message: error?.message || "Server error!!!"
             })
         }
     }else{
-        res.json({
+        res.status(401).json({
             status: false,
             message: "User is unauthorized to delete billing method!!!",
         });

@@ -6,7 +6,7 @@ exports.error4o4Controller = (req, res, next) => {
 
 exports.error401Controller = (error, req, res, next) => {
     if(error.status) {
-        res.json({
+        res.status(401).json({
             status: false,
             message: error?.message || "User is unauthorized!!!"
         });
